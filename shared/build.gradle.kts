@@ -11,6 +11,7 @@ kotlin {
     android()
 
     jvm("desktop")
+//    js(IR) { browser() }
 
     ios()
     iosSimulatorArm64()
@@ -31,7 +32,16 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
-                implementation(compose.materialIconsExtended)
+                api(Deps.Log.kermit)
+                api(Deps.Kotlinx.coroutines)
+                api(Deps.Koin.core)
+                api(Deps.Kor.korio)
+//                api(Deps.Matrix.Client)
+                with(Deps.Utility) {
+                    api(mpsettings)
+                    api(mpsettingsNoArgs)
+                    api(compose.ui)
+                }
             }
         }
         val androidMain by getting {
@@ -54,13 +64,16 @@ kotlin {
                 implementation(compose.desktop.common)
             }
         }
+//        val jsMain by getting {}
+//        val jsTest by getting
     }
 }
 
 android {
     compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res", "src/commonMain/resources")
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].assets.srcDirs("src/commonMain/resources")
     defaultConfig {
         minSdk = 24
         targetSdk = 33

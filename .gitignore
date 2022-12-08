@@ -9,7 +9,7 @@ build/
 .cxx
 iosApp/Podfile.lock
 iosApp/Pods/*
-iosApp/WidgetsGallery.xcworkspace/*
-iosApp/WidgetsGallery.xcodeproj/*
-!iosApp/WidgetsGallery.xcodeproj/project.pbxproj
+iosApp/ChiaChat.xcworkspace/*
+iosApp/ChiaChat.xcodeproj/*
+!iosApp/ChiaChat.xcodeproj/project.pbxproj
 shared/shared.podspec

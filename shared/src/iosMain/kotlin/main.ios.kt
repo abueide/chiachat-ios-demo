@@ -9,17 +9,44 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Application
-import org.jetbrains.compose.demo.widgets.ui.MainView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import org.chiachat.app.SharedAppModules
+import org.chiachat.app.ui.ComposeAppModules
+import org.chiachat.app.ui.ComposeRoot
+import org.chiachat.app.ui.theme.AppTheme
+import org.koin.core.context.startKoin
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 import platform.UIKit.UIViewController
 
-fun MainViewController() : UIViewController =
-    Application("Widgets Gallery") {
-        Column {
-            // To skip upper part of screen.
-            Box(
-                modifier = Modifier
-                    .height(30.dp)
-            )
-            MainView()
+internal val root = ComposeRoot()
+
+
+internal val iosModule = module {
+    factory(named("ioScope")) {
+        CoroutineScope(Dispatchers.Default)
+    }
+    factory(named("vmScope")) {
+        CoroutineScope(Dispatchers.Default)
+    }
+}
+fun MainViewController() : UIViewController {
+    startKoin {
+      val composeModules = ComposeAppModules()
+      val sharedModules = SharedAppModules()
+      modules(iosModule + composeModules.all + sharedModules.all)
+      allowOverride(false)
+    }
+
+    val controller:  UIViewController =  Application("ChiaChat") {
+        AppTheme {
+            Column {
+                // To skip upper part of screen.
+                root.View()
+            }
         }
     }
+    return controller
+}
+

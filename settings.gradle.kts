@@ -20,7 +20,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "widgets-gallery"
+rootProject.name = "chiachat"
 
 include(":androidApp")
 include(":shared")
